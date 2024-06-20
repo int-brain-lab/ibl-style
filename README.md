@@ -13,9 +13,11 @@ pip install ibl-style
 
 ## Figure guidelines
 
+Original figures generated from Python or MATLAB code should be saved in PDF (or SVG) format. These formats are *vector graphic* formats, meaning that the quality is the same regardless of the final resolution. It's okay to temporarily convert figures to PNG for an initial submission of a paper, but be aware that PNG is a raster format which means the image has been converted to pixels and the resolution is now fixed. Unless absolutely necessary you should never use JPG/JPEG/GIF formats -- these raster formats are lossy formats and your figures may end up looking bad.
+
 ### Size
 
-Figures should be **90 mm** for single column or **180 mm** wide for double column. The height of a standard page is **170 mm**.
+Figures should be **90 mm** for single column or **180 mm** wide for double column. In most journals the maximum height of a figure is **170 mm**.
 
 ### Font
 
@@ -28,13 +30,16 @@ Figures should use Helvetica for all fonts. You can find the necessary font file
 
 #### Axes
 
+ - Axis lines should usually be 0.5 pt width, and ticks should be 0.25. Keep lines in the range 0.25-1 pt
  - Axis labels should identify the value reported and (units) in parenthesis
- - When the unit is a percentage (%) the range should be from 0 to 100, not 0 to 1
+
+#### Units
+
+ - Separate thousands with commas (1,000)
+ - Percentages should range from 0 to 100
 
 ### Colors
 
-
-
-## License
-
-`ibl-style` is distributed under the terms of the [MIT](https://spdx.org/licenses/MIT.html) license.
+```
+# To-do code example
+```
