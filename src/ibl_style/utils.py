@@ -142,4 +142,3 @@ def add_label(text, fig, xspan, yspan, padx=2.5, pady=2.5, fontsize=8):
         'va': 'bottom'}
 
     return label
-

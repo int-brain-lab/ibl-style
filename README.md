@@ -61,6 +61,15 @@ figure_style()
 
 ### Colors
 
+A standardised color scheme for the different recording labs and institutes in the IBL has been defined and should be used
+consistently throughout different papers. To import the color schemes, use the following code
+
+```python
+from ibl_style.style import get_lab_colors, get_institute_colors
+lab_colors = get_lab_colors()
+institute_colors = get_institute_colors()
+```
+
 
 ### Multi-panel figures
 To flexibly position plots within a multi-panel figure we recommend using [figrid](https://github.com/dougollerenshaw/figrid).
