@@ -3,7 +3,7 @@ import matplotlib
 
 
 def figure_style():
-    sns.set(style="ticks", context="paper", font="Arial",
+    sns.set(style="ticks", context="paper",
             rc={"font.size": 7,
                 "axes.titlesize": 8,
                 "axes.labelsize": 7,

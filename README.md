@@ -22,10 +22,10 @@ Figures should be **90 mm** for single column or **180 mm** wide for double colu
 Two convenience methods can be used to generate figures with the single colum (90mm x 170mm) or double column (180mm x 170mm) dimension
 
 ```python
-from ibl_style.utils import single_column_figure, double_column_figure
+from ibl_style.utils import single_column_fig, double_column_fig
 
-fig_single = single_column_figure()
-fig_double = double_column_figure()
+fig_single = single_column_fig()
+fig_double = double_column_fig()
 ```
 
 ### Font
@@ -78,26 +78,26 @@ See below for an example of how they can be used.
 ### Removing whitespace
 To remove whitespace around the border of a figure use a variation of the following code
 ```python
-from ibl_style.utils import mm_to_inch
+from ibl_style.utils import MM_TO_INCH
 # Remove 7.5 mm of whitespace around figure in all directions
 adjust = 7.5
 # Depending on the location of axis labels leave a bit more space
 extra =  5
-width, height = fig.get_size_inches() / mm_to_inch
+width, height = fig.get_size_inches() / MM_TO_INCH
 fig.subplots_adjust(top=1-adjust/height, bottom=(adjust + extra)/height, 
                     left=(adjust + extra)/width, right=1-adjust/width)
 ```
 Try to avoid using matplotlib methods such as `plt.tight_layout` or `plt.savefig(bbox_inches='tight')`
 as these change the size of the figure.
 
-### Example
+## Example
 Here we walk through an example using the above tools to generate a double column,
 multipanel figure with the recommended styling using figrid.
 
 First we set the figure style and generate a figure
 
 ```python
-from ibl_style.utils import get_coord_pos, add_label, mm_to_inch, double_column_fig
+from ibl_style.utils import get_coords, add_label, MM_TO_INCH, double_column_fig
 from ibl_style.style import figure_style
 import figrid as fg
 
@@ -108,7 +108,7 @@ figure_style()
 fig = double_column_fig()
 
 # Get the dimensions of the figure in mm
-width, height = fig.get_size_inches() / mm_to_inch
+width, height = fig.get_size_inches() / MM_TO_INCH
 ```
 Next we get the xspan and yspan for each panel
 
@@ -182,3 +182,13 @@ fig.subplots_adjust(top=1-adjust/height, bottom=(adjust + extra)/height,
 
 fig.savefig('example_figure.pdf')
 ```
+
+## Contributing
+Changes are merged by pull requests.
+Release checklist:
+- [x] Update version in `ibl_style/__init__.py`
+- [x] Update `CHANGELOG.md`
+- [x] Create a pull request to the `main` branch on GitHub
+- [x] Once the PR is merged, create a new tag and push the tag
+
+Once a tag is pushed on main the package is uploaded to PyPI using GitHub Actions.
