@@ -192,6 +192,10 @@ fig.subplots_adjust(top=1-adjust/height, bottom=(adjust + extra)/height,
 fig.savefig('example_figure.pdf')
 ```
 
+You should get a figure like this, 
+![example_figure](https://github.com/user-attachments/assets/207dad61-3670-40ec-9474-4ea0f67e7f0b)
+
+
 ## Contributing
 Changes are merged by pull requests.
 Release checklist:
