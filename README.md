@@ -199,7 +199,8 @@ fig.savefig('example_figure.pdf')
 ```
 
 You should get a figure like this, 
-![example_figure](https://github.com/user-attachments/assets/207dad61-3670-40ec-9474-4ea0f67e7f0b)
+![example_figure](https://github.com/user-attachments/assets/39ae0d1d-c8bf-45ea-bc14-acf835ade5ec)
+
 
 
 ## Contributing
