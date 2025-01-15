@@ -77,7 +77,7 @@ To flexibly position plots within a multi-panel figure we recommend using [figri
 
 - Panels in the x direction (width) should be separated by ~15mm
 - Panels in the y direction (height) should be separated by ~20mm
-- Panel labels should be placed in the upper left corner with a padding between the label and axis of ~5mm
+- Panel labels should be placed in the upper left corner and lie outside all axis labels
 
 A couple of helper functions exist in ibl_style.utils (`get_coord_pos` and `add_label`) that can be used alongside the 
 methods from figrid to allow you to place panels and labels according to the specifications above. 
@@ -94,7 +94,7 @@ adjust = 7.5
 extra =  5
 width, height = fig.get_size_inches() / MM_TO_INCH
 fig.subplots_adjust(top=1-adjust/height, bottom=(adjust + extra)/height, 
-                    left=(adjust + extra)/width, right=1-adjust/width)
+                    left=adjust/width, right=1-adjust/width)
 ```
 Try to avoid using matplotlib methods such as `plt.tight_layout` or `plt.savefig(bbox_inches='tight')`
 as these change the size of the figure.
@@ -130,28 +130,28 @@ Next we get the xspan and yspan for each panel
 # The first row contains
 # - Three columns along the width with equal ratio (ratios=[1, 1, 1])
 # - A spacing of 15 mm between the columns (space=15). Note how we use mm as the default unit
-# - The padding of the first column from the left of the figure is 5mm (pad=5)
+# - The padding of the first column from the left of the figure is 10mm (pad=10)
 # - The columns span the full width of the figure
-xspans1 = get_coords(width, ratios=[1, 1, 1], space=15, pad=5, span=(0, 1))
+xspans1 = get_coords(width, ratios=[1, 1, 1], space=15, pad=10, span=(0, 1))
 
 # The second row contains
 # - One column that spans the 60 % of the width of the figure
-xspans2 = get_coords(width, ratios=[1], pad=5, span=(0.2, 0.8))
+xspans2 = get_coords(width, ratios=[1], pad=10, span=(0.2, 0.8))
 
 # The third row contains 
 # - Two columns along the width with ratios 1:3 (ratios=[1, 3])
-xspans3 = get_coords(width, ratios=[2, 1], space=15, pad=5, span=(0, 1))
-# We further split the 2nd column in row 3 into 3 sub figures with no spacing between them
-xspans3_2 = get_coords(width, ratios=[1, 1, 1], space=0, pad=0, span=xspans3[1])
+xspans3 = get_coords(width, ratios=[2, 1], space=15, pad=10, span=(0, 1))
+# We further split the 2nd column in row 3 into 2 sub figures with no spacing between them
+xspans3_2 = get_coords(width, ratios=[2, 1], space=0, pad=0, span=xspans3[1])
 
 # ROWS
 # Get the row positions (yspans) along the height of the figure. 
 # Here we specify that we want 
 # - Three rows along the height with ratios 1:1:2 (ratios=[1, 1, 2])
 # - A spacing of 20 mm between rows 1 and 2 and a spacing of 25 mm between rows 2 and 3 the panels (space=[10, 15])
-# - The padding of the first row from the top of the figure is 5mm (pad=5)
+# - The padding of the first row from the top of the figure is 10mm (pad=10)
 # - The rows span the full width of the figure
-yspans = get_coords(height, ratios=[1, 1, 2], space=[20, 25], pad=5, span=(0, 1))
+yspans = get_coords(height, ratios=[1, 1, 2], space=[20, 25], pad=10, span=(0, 1))
 ```
 
 Once we have the coordinates of our rows and columns we can then use figrid to add axis in the correct locations
@@ -163,13 +163,19 @@ axs = {'a': fg.place_axes_on_grid(fig, xspan=xspans1[0], yspan=yspans[0]),
        'e': fg.place_axes_on_grid(fig, xspan=xspans3[0], yspan=yspans[2]),
        'f_1': fg.place_axes_on_grid(fig, xspan=xspans3_2[0], yspan=yspans[2]),
        'f_2': fg.place_axes_on_grid(fig, xspan=xspans3_2[1], yspan=yspans[2]),
-       'f_3': fg.place_axes_on_grid(fig, xspan=xspans3_2[2], yspan=yspans[2]),
 }
 ```
+Next we can plot some example data onto the individual panels
+```python
+from ibl_style.examples import plot_example
+plot_example(axs)
+```
+
 We can then add labels to the figure
 ```python
 labels = []
-padx = pady = 5
+padx = 12
+pady = 5
 labels.append(add_label('a', fig, xspans1[0], yspans[0], padx, pady, fontsize=8))
 labels.append(add_label('b', fig, xspans1[1], yspans[0], padx, pady, fontsize=8))
 labels.append(add_label('c', fig, xspans1[2], yspans[0], padx, pady, fontsize=8))
@@ -187,7 +193,7 @@ adjust = 7.5
 # Depending on the location of axis labels leave a bit more space
 extra =  5
 fig.subplots_adjust(top=1-adjust/height, bottom=(adjust + extra)/height, 
-                    left=(adjust + extra)/width, right=1-adjust/width)
+                    left=adjust/width, right=1-adjust/width)
 
 fig.savefig('example_figure.pdf')
 ```

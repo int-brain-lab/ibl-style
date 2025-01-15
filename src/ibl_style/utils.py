@@ -54,16 +54,17 @@ def get_coords(extent, ratios=[1], space=15, pad=7.5, span=(0, 1)):
     >>> get_coords(extent=100, ratios=[1, 1, 2], space=[5, 10], pad=7.5)
     [[0.075, 0.26875], [0.31875, 0.5125], [0.6124, 1.0]]
     """
-    span = np.array(span) * 100
+    # This is the number used by figrid to split the figure into columns and rows
+    ngrid = 100
+    span = np.array(span) * ngrid
     full_span = span[1] - span[0]
 
     if isinstance(space, list):
-        #space = [s / extent for s in space]
-        space = [np.round((s / extent) * 100) for s in space]
+        space = [np.round((s / extent) * ngrid) for s in space]
     else:
-        space = [np.round((space / extent) * 100)] * (len(ratios) - 1)
+        space = [np.round((space / extent) * ngrid)] * (len(ratios) - 1)
 
-    pad = np.round((pad / extent * 100))
+    pad = np.round((pad / extent) * ngrid)
 
     white_space = sum(space)
     available_space = (full_span - white_space - pad)
@@ -75,7 +76,11 @@ def get_coords(extent, ratios=[1], space=15, pad=7.5, span=(0, 1)):
     for i, r in enumerate(ratios[1:]):
         coords.append([coords[i][-1] + space[i], coords[i][-1] + space[i] + panel_span * r])
 
-    return np.array(coords) / 100 + 1 / 10000
+    # This offset is need due to the way that figrid converts the floats into ints. Due to rounding
+    # errors 0.58 will be returned as 57, therefore we add a little offset to make sure the correct value is used
+    offset = 1 / 10000
+
+    return np.array(coords) / ngrid + offset
 
 
 def add_label(text, fig, xspan, yspan, padx=2.5, pady=2.5, fontsize=8):
