@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+import numpy as np
 
 MM_TO_INCH = 1 / 25.4
 
@@ -53,18 +54,21 @@ def get_coords(extent, ratios=[1], space=15, pad=7.5, span=(0, 1)):
     >>> get_coords(extent=100, ratios=[1, 1, 2], space=[5, 10], pad=7.5)
     [[0.075, 0.26875], [0.31875, 0.5125], [0.6124, 1.0]]
     """
+    # This is the number used by figrid to split the figure into columns and rows
+    ngrid = 100
+    span = np.array(span) * ngrid
     full_span = span[1] - span[0]
 
     if isinstance(space, list):
-        space = [s / extent for s in space]
+        space = [np.round((s / extent) * ngrid) for s in space]
     else:
-        space = [space / extent] * (len(ratios) - 1)
+        space = [np.round((space / extent) * ngrid)] * (len(ratios) - 1)
 
-    pad = pad / extent
+    pad = np.round((pad / extent) * ngrid)
 
     white_space = sum(space)
-    available_space = (1 - white_space - pad) * full_span
-    panel_span = available_space / sum(ratios)
+    available_space = (full_span - white_space - pad)
+    panel_span = np.round(available_space / sum(ratios))
 
     # Get the coordinates of the first panel
     coords = [[pad + span[0], pad + span[0] + panel_span * ratios[0]]]
@@ -72,7 +76,11 @@ def get_coords(extent, ratios=[1], space=15, pad=7.5, span=(0, 1)):
     for i, r in enumerate(ratios[1:]):
         coords.append([coords[i][-1] + space[i], coords[i][-1] + space[i] + panel_span * r])
 
-    return coords
+    # This offset is need due to the way that figrid converts the floats into ints. Due to rounding
+    # errors 0.58 will be returned as 57, therefore we add a little offset to make sure the correct value is used
+    offset = 1 / 10000
+
+    return np.array(coords) / ngrid + offset
 
 
 def add_label(text, fig, xspan, yspan, padx=2.5, pady=2.5, fontsize=8):
@@ -130,7 +138,7 @@ def add_label(text, fig, xspan, yspan, padx=2.5, pady=2.5, fontsize=8):
     width, height = fig.get_size_inches() / MM_TO_INCH
 
     def _get_label_pos(dimension, coord, pad):
-        return coord - pad / dimension
+        return np.max([0, coord - pad / dimension])
 
     label = {
         'label_text': text,
